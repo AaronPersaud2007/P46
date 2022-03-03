@@ -1,6 +1,7 @@
 var bg,bgImg;
 var player, carImg;
 var gasoline, gasolineImg, gasolineGroup
+var tire, tireImg, tireGroup 
 
 function preload(){
   
@@ -8,7 +9,7 @@ function preload(){
 
   bgImg = loadImage("bg.png")
   gasolineImg = loadImage("gasoline.png")
-
+  tireImg= loadImage("tires.png")
 }
 
 function setup() {
@@ -33,21 +34,12 @@ invisibleGround = createSprite(windowWidth/2,windowHeight,windowWidth,10);
   player.setCollider("rectangle",0,0,400,player.height);
 
   gasolineGroup = new Group();
+  tireGroup = new Group();
 }
 
-function showFuelBar() {
-  push();
-  image(gasolineImg, width / 2 - 130, height - player.positionY - 350, 20, 20);
-  fill("white");
-  rect(width / 2 - 100, height - player.positionY - 350, 185, 20);
-  fill("#ffc400");
-  rect(width / 2 - 100, height - player.positionY - 350, player.fuel, 20);
-  noStroke();
-  pop();
-}
 
 function creategasoline(){
-  if (frameCount % 200 === 0){
+  if (frameCount % 290 === 0){
 
     
 
@@ -57,6 +49,20 @@ function creategasoline(){
     gasoline.velocityX = -3
     gasoline.lifetime = 400
    gasolineGroup.add(gasoline)
+  }
+}
+
+function createtires(){
+  if (frameCount % 200 === 0){
+
+    
+
+    tire = createSprite(width/2 + 300,800, 30,30);
+    tire.addImage(tireImg)
+    tire.scale = 0.3
+    tire.velocityX = -3
+    tire.lifetime = 400
+   tireGroup.add(tire)
   }
 }
 function draw() {
@@ -89,9 +95,18 @@ if(gasolineGroup.isTouching(player)){
         }
       }
     }
+    if(tireGroup.isTouching(player)){
+ 
 
+      for(var i=0;i<tireGroup.length;i++){     
+           
+       if(tireGroup[i].isTouching(player)){
+            tireGroup[i].destroy()
+            }
+          }
+        }
 player.collide(invisibleGround);
-
+createtires();
 creategasoline();
 drawSprites();
 
